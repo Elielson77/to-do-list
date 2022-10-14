@@ -21,12 +21,6 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<ITask[]>([]);
 
   useLayoutEffect(() => {
-    if (tasks[0]) {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-  }, [tasks]);
-
-  useLayoutEffect(() => {
     const tasks = localStorage.getItem("tasks");
     if (tasks) {
       setTasks(JSON.parse(tasks));
@@ -44,12 +38,18 @@ export const useTask = () => {
   const { setTasks } = useContext(TaskContext);
 
   const addTask = (task: ITask) => {
-    setTasks((prevTasks) => [...prevTasks, task]);
+    setTasks((prevTasks) => {
+      localStorage.setItem("tasks", JSON.stringify([...prevTasks, task]));
+      return [...prevTasks, task];
+    });
   };
 
-  const removeTask = (task: ITask) => {
-    const { id } = task;
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  const removeTask = (id: string) => {
+    setTasks((prevTasks) => {
+      const currentTasks = prevTasks.filter((task) => task.id !== id);
+      localStorage.setItem("tasks", JSON.stringify(currentTasks));
+      return currentTasks;
+    });
   };
 
   const concludedTask = (id: string) => {

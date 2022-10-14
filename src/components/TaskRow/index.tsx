@@ -5,7 +5,9 @@ import {
   useMediaQuery,
   Tooltip,
   Checkbox,
+  IconButton,
 } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useTask } from "../../context/TaskContext";
 
@@ -19,7 +21,7 @@ const TaskRow = ({ name, description, id }: ITaskRowProps) => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [taskConcluded, setTaskConcluded] = useState<boolean>(false);
-  const { concludedTask, noConcludedTask } = useTask();
+  const { concludedTask, noConcludedTask, removeTask } = useTask();
 
   useEffect(() => {
     taskConcluded && concludedTask(id);
@@ -33,7 +35,7 @@ const TaskRow = ({ name, description, id }: ITaskRowProps) => {
         textAlign: "center",
         backgroundColor: "#fefefe",
         width: smUp ? "30%" : "80%",
-        borderRadius: '2px',
+        borderRadius: "2px",
         display: "flex",
         justifyContent: "space-between",
         padding: "5px 10px",
@@ -54,6 +56,9 @@ const TaskRow = ({ name, description, id }: ITaskRowProps) => {
           </Typography>
         </Tooltip>
       </Box>
+      <IconButton onClick={() => removeTask(id)} >
+        <Delete />
+      </IconButton>
     </Box>
   );
 };
