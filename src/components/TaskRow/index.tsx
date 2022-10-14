@@ -1,20 +1,31 @@
-import { Close } from "@mui/icons-material";
 import {
   Box,
   Typography,
   useTheme,
   useMediaQuery,
   Tooltip,
+  Checkbox,
 } from "@mui/material";
+import { useState, useEffect } from "react";
+import { useTask } from "../../context/TaskContext";
 
 interface ITaskRowProps {
   name: string;
-  description: string;
+  description?: string;
+  id: string;
 }
 
-const TaskRow = ({ name, description }: ITaskRowProps) => {
+const TaskRow = ({ name, description, id }: ITaskRowProps) => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const [taskConcluded, setTaskConcluded] = useState<boolean>(false);
+  const { concludedTask, noConcludedTask } = useTask();
+
+  useEffect(() => {
+    taskConcluded && concludedTask(id);
+    !taskConcluded && noConcludedTask(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [concludedTask]);
 
   return (
     <Box
@@ -22,17 +33,27 @@ const TaskRow = ({ name, description }: ITaskRowProps) => {
         textAlign: "center",
         backgroundColor: "#fefefe",
         width: smUp ? "30%" : "80%",
-        borderRadius: 20,
+        borderRadius: '2px',
         display: "flex",
         justifyContent: "space-between",
-        padding: "5px 16px",
+        padding: "5px 10px",
+        borderBottom: "2px solid black",
       }}
     >
-      <Tooltip title={description} arrow>
-        <Typography>{name}</Typography>
-      </Tooltip>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Tooltip title="Marcar como concluída">
+          <Checkbox
+            value={taskConcluded}
+            onChange={(e) => setTaskConcluded(e.currentTarget.checked)}
+          />
+        </Tooltip>
 
-      <Close />
+        <Tooltip title={description} arrow>
+          <Typography ml={1} sx={{ textTransform: "" }}>
+            {name[0].toUpperCase() + name.slice(1)}
+          </Typography>
+        </Tooltip>
+      </Box>
     </Box>
   );
 };

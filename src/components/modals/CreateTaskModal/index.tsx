@@ -4,8 +4,8 @@ import {
   Modal,
   useTheme,
   useMediaQuery,
-  Input,
   Button,
+  TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { nanoid as id } from "nanoid";
@@ -20,7 +20,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
   const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string | undefined>("");
   const { addTask } = useTask();
 
   const creatTask = () => {
@@ -33,7 +33,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
       };
       addTask(task);
       setName("");
-      setDescription("");
+      setDescription(undefined);
       onClose();
     } catch {
       console.log("Deu erro");
@@ -41,7 +41,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
   };
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
+    <Modal open={isOpen} onClose={onClose} disableAutoFocus disableScrollLock>
       <Box
         sx={{
           backgroundColor: "white",
@@ -67,21 +67,24 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
             gap: 2,
           }}
         >
-          <Input
+          <TextField
+            variant="standard"
+            inputProps={{ autoFocus: true }}
             fullWidth
-            type="text"
             placeholder="Nome da tarefa"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
             sx={{ fontSize: "14px" }}
+            autoFocus
           />
 
-          <Input
+          <TextField
+            variant="standard"
             fullWidth
             type="text"
             placeholder="Descrição tarefa"
             value={description}
-            onChange={(e) => setDescription(e.currentTarget.value)}
+            onChange={(e) => setDescription(e.currentTarget.value || undefined)}
             sx={{ fontSize: "14px" }}
           />
 

@@ -16,9 +16,10 @@ function App() {
       </Box>
       <br />
       <br />
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         {tasks.map((task) => (
           <TaskRow
+            id={task.id}
             name={task.name}
             description={task.description}
             key={task.id}

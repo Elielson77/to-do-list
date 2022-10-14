@@ -5,7 +5,7 @@ import {
   SetStateAction,
   useContext,
   useState,
-  useEffect,
+  useLayoutEffect,
 } from "react";
 import { ITask } from "../utils/types";
 
@@ -20,13 +20,13 @@ TaskContext.displayName = "Tasks";
 export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<ITask[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (tasks[0]) {
       localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   }, [tasks]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const tasks = localStorage.getItem("tasks");
     if (tasks) {
       setTasks(JSON.parse(tasks));
@@ -52,8 +52,7 @@ export const useTask = () => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const concludedTask = (task: ITask) => {
-    const { id } = task;
+  const concludedTask = (id: string) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => {
         if (id === task.id) {
@@ -64,8 +63,7 @@ export const useTask = () => {
     );
   };
 
-  const noConcludedTask = (task: ITask) => {
-    const { id } = task;
+  const noConcludedTask = (id: string) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => {
         if (id === task.id) {
