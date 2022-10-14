@@ -53,25 +53,29 @@ export const useTask = () => {
   };
 
   const concludedTask = (id: string) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => {
+    setTasks((prevTasks) => {
+      const currentTasks = prevTasks.map((task) => {
         if (id === task.id) {
           task.concluded = true;
         }
         return task;
-      })
-    );
+      });
+      localStorage.setItem("tasks", JSON.stringify(currentTasks));
+      return currentTasks;
+    });
   };
 
   const noConcludedTask = (id: string) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => {
+    setTasks((prevTasks) => {
+      const currentTasks = prevTasks.map((task) => {
         if (id === task.id) {
           task.concluded = false;
         }
         return task;
-      })
-    );
+      });
+      localStorage.setItem("tasks", JSON.stringify(currentTasks));
+      return currentTasks;
+    });
   };
 
   return { addTask, removeTask, concludedTask, noConcludedTask };
