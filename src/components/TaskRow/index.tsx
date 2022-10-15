@@ -42,11 +42,9 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
         </Tooltip>
 
         <Tooltip title={description} arrow>
-        <Typography
-            className={concluded ? styles.titleConcluded : styles.title}
-          >
+          <p className={concluded ? styles.titleConcluded : styles.title}>
             {name[0].toUpperCase() + name.slice(1)}
-          </Typography>
+          </p>
         </Tooltip>
       </Box>
       <IconButton onClick={() => removeTask(id)}>
