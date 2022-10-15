@@ -43,7 +43,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
 
         <Tooltip title={description} arrow>
         <Typography
-            className={concluded ? styles.title_concluded : styles.title}
+            className={concluded ? styles.titleConcluded : styles.title}
           >
             {name[0].toUpperCase() + name.slice(1)}
           </Typography>
