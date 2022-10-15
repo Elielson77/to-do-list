@@ -1,4 +1,10 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { AddCircleRounded } from "@mui/icons-material";
 import { useState, useContext } from "react";
 import CreateTaskModal from "./components/modals/CreateTaskModal";
@@ -6,11 +12,14 @@ import TaskRow from "./components/TaskRow";
 import { TaskContext } from "./context/TaskContext";
 
 function App() {
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+
   const [openModalCreateTask, setOpenModalCreateTask] = useState(false);
   const { tasks } = useContext(TaskContext);
   const date = new Date();
   const currentDate = date.toLocaleDateString(undefined, {
-    weekday: "long",
+    weekday: "short",
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -28,7 +37,16 @@ function App() {
       </Box>
       <br />
       <br />
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+
+      <Box
+        sx={{
+          pt: 3,
+          display: "flex",
+          flexDirection: "column",
+          margin: "0 auto",
+          width: smUp ? "500px" : "100%",
+        }}
+      >
         {tasks.map((task) => (
           <TaskRow key={task.id} {...task} />
         ))}

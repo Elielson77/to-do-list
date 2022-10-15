@@ -1,7 +1,5 @@
 import {
   Box,
-  useTheme,
-  useMediaQuery,
   Tooltip,
   Checkbox,
   IconButton,
@@ -18,15 +16,10 @@ interface ITaskRowProps {
 }
 
 const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
   const { concludedTask, noConcludedTask, removeTask } = useTask();
 
   return (
     <Box
-      sx={{
-        width: smUp ? "30%" : "80%",
-      }}
       className={`${styles.container} ${concluded ? styles.concluded : ""}`}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
