@@ -26,16 +26,9 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
   return (
     <Box
       sx={{
-        textAlign: "center",
-        backgroundColor: "#CFCFCF",
         width: smUp ? "30%" : "80%",
-        borderRadius: "4px",
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "5px 10px",
-        borderBottom: "2px solid rgb(0, 0, 0, 0.54)",
       }}
-      className={`${concluded && styles.concluded}`}
+      className={`${styles.container} ${concluded ? styles.concluded : ""}`}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Tooltip title="Marcar como concluída">
@@ -49,7 +42,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
         </Tooltip>
 
         <Tooltip title={description} arrow>
-          <Typography
+        <Typography
             className={concluded ? styles.title_concluded : styles.title}
           >
             {name[0].toUpperCase() + name.slice(1)}
