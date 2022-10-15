@@ -35,7 +35,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
         padding: "5px 10px",
         borderBottom: "2px solid rgb(0, 0, 0, 0.54)",
       }}
-      className={concluded ? styles.concluded : ""}
+      className={`${concluded && styles.concluded}`}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Tooltip title="Marcar como concluída">
