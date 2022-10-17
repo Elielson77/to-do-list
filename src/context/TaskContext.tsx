@@ -20,10 +20,18 @@ TaskContext.displayName = "Tasks";
 export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<ITask[]>([]);
 
+  const orderToConcluded = (tasksArr: ITask[]) => {
+    return tasksArr.sort((a: ITask, b: ITask) => {
+      if (a.concluded >= b.concluded) return 1;
+      if (a.concluded <= b.concluded) return -1;
+      return 0;
+    });
+  };
+
   useLayoutEffect(() => {
     const tasks = localStorage.getItem("tasks");
     if (tasks) {
-      setTasks(JSON.parse(tasks));
+      setTasks(orderToConcluded(JSON.parse(tasks)));
     }
   }, []);
 
