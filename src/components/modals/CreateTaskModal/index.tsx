@@ -37,6 +37,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
           month: "numeric",
           day: "numeric",
         }),
+        hour_create: `${date.getHours()}:${date.getMinutes()}`,
       };
       addTask(task);
       setName("");
