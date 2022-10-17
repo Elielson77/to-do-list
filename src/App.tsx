@@ -11,6 +11,7 @@ import { useState, useContext } from "react";
 import CreateTaskModal from "./components/modals/CreateTaskModal";
 import TaskRow from "./components/TaskRow";
 import { TaskContext } from "./context/TaskContext";
+import { ITask } from "./utils/types";
 
 const filtersDefault = {
   concluded: false,
@@ -45,6 +46,16 @@ function App() {
     setFilters({ concluded: false, nonConcluded: false, all: true });
   };
 
+  const renderTasks = (task: ITask) => {
+    if (filters.concluded === task.concluded) {
+      return <TaskRow key={task.id} {...task} />;
+    } else if (filters.nonConcluded === !task.concluded) {
+      return <TaskRow key={task.id} {...task} />;
+    } else if (filters.all) {
+      return <TaskRow key={task.id} {...task} />;
+    }
+  };
+
   return (
     <Box sx={{ padding: "10px 16px" }}>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -60,25 +71,58 @@ function App() {
 
       <Box sx={{ display: "flex", gap: 1 }}>
         <Chip
-          label="Concluidas"
-          sx={{ backgroundColor: "white" }}
-          icon={<Done />}
-          onClick={filterConcluded}
-        />
-        <Chip
-          label="Não concluidas"
-          sx={{ backgroundColor: "white" }}
-          icon={<Block />}
-          onClick={filterNonConcluded}
-        />
-        <Chip
-          label="Todas"
-          sx={{ backgroundColor: "white" }}
+          label={
+            <Typography
+              sx={{
+                fontSize: "1em",
+                fontWeight: "bold",
+                color: filters.all ? "#828282" : "#545353",
+              }}
+            >
+              Todas
+            </Typography>
+          }
+          sx={{ backgroundColor: filters.all ? "#212121" : "#CFCFCF" }}
           icon={<List />}
           onClick={filterAll}
+          variant="filled"
+        />
+
+        <Chip
+          label={
+            <Typography
+              sx={{
+                fontSize: "1em",
+                fontWeight: "bold",
+                color: filters.concluded ? "#828282" : "#545353",
+              }}
+            >
+              Concluídas
+            </Typography>
+          }
+          sx={{ backgroundColor: filters.concluded ? "#212121" : "#CFCFCF" }}
+          icon={<Done />}
+          onClick={filterConcluded}
+          variant="filled"
+        />
+        <Chip
+          label={
+            <Typography
+              sx={{
+                fontSize: "1em",
+                fontWeight: "bold",
+                color: filters.nonConcluded ? "#828282" : "#545353",
+              }}
+            >
+              Não concluidas
+            </Typography>
+          }
+          sx={{ backgroundColor: filters.nonConcluded ? "#212121" : "#CFCFCF" }}
+          icon={<Block />}
+          onClick={filterNonConcluded}
+          variant="filled"
         />
       </Box>
-
       <Box
         sx={{
           pt: 3,
@@ -88,9 +132,7 @@ function App() {
           width: smUp ? "500px" : "100%",
         }}
       >
-        {tasks.map((task) => (
-          <TaskRow key={task.id} {...task} />
-        ))}
+        {tasks.map((task) => renderTasks(task))}
       </Box>
 
       <Box sx={{ position: "fixed", bottom: "20px", right: "20px" }}>
