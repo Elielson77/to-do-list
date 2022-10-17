@@ -16,7 +16,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
   return (
     <Box className={`${styles.container} ${concluded ? styles.concluded : ""}`}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Tooltip title="Marcar como concluída">
+        <Tooltip title={concluded ? "Desmarcar como concluída" : "Marcar como concluída"} arrow>
           <Checkbox
             color="success"
             checked={concluded}

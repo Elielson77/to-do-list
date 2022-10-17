@@ -26,6 +26,8 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
   const creatTask = () => {
     try {
       const date = new Date();
+      const hours = String(date.getHours());
+      const minutes = String(date.getMinutes());
 
       const task = {
         name,
@@ -37,7 +39,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
           month: "numeric",
           day: "numeric",
         }),
-        hour_create: `${date.getHours()}:${date.getMinutes()}`,
+        hour_create: `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`,
       };
       addTask(task);
       setName("");
