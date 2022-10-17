@@ -69,7 +69,9 @@ function App() {
       <br />
       <br />
 
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box
+        sx={{ display: "flex", gap: 1, justifyContent: !smUp ? "center" : "" }}
+      >
         <Chip
           label={
             <Typography
