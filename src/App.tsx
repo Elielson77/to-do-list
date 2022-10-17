@@ -94,23 +94,6 @@ function App() {
               sx={{
                 fontSize: "1em",
                 fontWeight: "bold",
-                color: filters.concluded ? "#828282" : "#545353",
-              }}
-            >
-              Concluídas
-            </Typography>
-          }
-          sx={{ backgroundColor: filters.concluded ? "#212121" : "#CFCFCF" }}
-          icon={<Done />}
-          onClick={filterConcluded}
-          variant="filled"
-        />
-        <Chip
-          label={
-            <Typography
-              sx={{
-                fontSize: "1em",
-                fontWeight: "bold",
                 color: filters.nonConcluded ? "#828282" : "#545353",
               }}
             >
@@ -120,6 +103,24 @@ function App() {
           sx={{ backgroundColor: filters.nonConcluded ? "#212121" : "#CFCFCF" }}
           icon={<Block />}
           onClick={filterNonConcluded}
+          variant="filled"
+        />
+
+        <Chip
+          label={
+            <Typography
+              sx={{
+                fontSize: "1em",
+                fontWeight: "bold",
+                color: filters.concluded ? "#828282" : "#545353",
+              }}
+            >
+              Concluídas
+            </Typography>
+          }
+          sx={{ backgroundColor: filters.concluded ? "#212121" : "#CFCFCF" }}
+          icon={<Done />}
+          onClick={filterConcluded}
           variant="filled"
         />
       </Box>
