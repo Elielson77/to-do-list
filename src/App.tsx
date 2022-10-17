@@ -28,7 +28,7 @@ function App() {
   const { tasks } = useContext(TaskContext);
   const date = new Date();
   const currentDate = date.toLocaleDateString(undefined, {
-    weekday: "short",
+    weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
