@@ -25,11 +25,18 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
 
   const creatTask = () => {
     try {
+      const date = new Date();
+
       const task = {
         name,
         description,
         id: id(),
         concluded: false,
+        create_date: date.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+        }),
       };
       addTask(task);
       setName("");
