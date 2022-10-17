@@ -10,7 +10,6 @@ import { useState, useContext } from "react";
 import CreateTaskModal from "./components/modals/CreateTaskModal";
 import TaskRow from "./components/TaskRow";
 import { TaskContext } from "./context/TaskContext";
-import { ITask } from "./utils/types";
 import FilterButton from "./components/FilterButton";
 
 const filtersDefault = {
@@ -67,16 +66,6 @@ function App() {
     },
   ];
 
-  const renderTasks = (task: ITask) => {
-    if (filters.concluded === task.concluded) {
-      return <TaskRow key={task.id} {...task} />;
-    } else if (filters.nonConcluded === !task.concluded) {
-      return <TaskRow key={task.id} {...task} />;
-    } else if (filters.all) {
-      return <TaskRow key={task.id} {...task} />;
-    }
-  };
-
   return (
     <Box sx={{ padding: "10px 16px" }}>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -107,7 +96,19 @@ function App() {
           width: smUp ? "500px" : "100%",
         }}
       >
-        {tasks.map((task) => renderTasks(task))}
+        {filters.concluded &&
+          tasks.map((task) => {
+            if (task.concluded === true)
+              return <TaskRow key={task.id} {...task} />;
+            return undefined;
+          })}
+        {filters.nonConcluded &&
+          tasks.map((task) => {
+            if (!task.concluded) return <TaskRow key={task.id} {...task} />;
+            return undefined;
+          })}
+        {filters.all &&
+          tasks.map((task) => <TaskRow key={task.id} {...task} />)}
       </Box>
 
       <Box sx={{ position: "fixed", bottom: "20px", right: "20px" }}>
