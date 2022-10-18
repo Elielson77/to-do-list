@@ -4,22 +4,22 @@ import { useTask } from "../../context/TaskContext";
 import styles from "./TaskRow.module.css";
 import { useState } from "react";
 import TaskDetails from "../modals/TaskDetails";
+import { ITask } from "../../utils/types";
 
-interface ITaskRowProps {
-  name: string;
-  description?: string;
-  id: string;
-  concluded: boolean;
-}
-
-const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
+const TaskRow = (props: ITask) => {
+  const { name, description, id, concluded } = props;
   const { concludedTask, noConcludedTask, removeTask } = useTask();
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false);
 
   return (
     <Box className={`${styles.container} ${concluded ? styles.concluded : ""}`}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Tooltip title={concluded ? "Desmarcar como concluída" : "Marcar como concluída"} arrow>
+        <Tooltip
+          title={
+            concluded ? "Desmarcar como concluída" : "Marcar como concluída"
+          }
+          arrow
+        >
           <Checkbox
             color="success"
             checked={concluded}
@@ -44,6 +44,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
       </IconButton>
 
       <TaskDetails
+        task={props}
         isOpen={isOpenModalDetails}
         onClose={() => setIsOpenModalDetails(false)}
       />

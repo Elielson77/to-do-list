@@ -54,7 +54,7 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
     <Modal open={isOpen} onClose={onClose} disableAutoFocus disableScrollLock>
       <Box
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "#eaeaea",
           borderRadius: "5px",
           padding: "10px 20px",
           width: smUp ? "500px" : "250px",
