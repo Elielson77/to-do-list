@@ -2,6 +2,8 @@ import { Box, Tooltip, Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { useTask } from "../../context/TaskContext";
 import styles from "./TaskRow.module.css";
+import { useState } from "react";
+import TaskDetails from "../modals/TaskDetails";
 
 interface ITaskRowProps {
   name: string;
@@ -12,6 +14,7 @@ interface ITaskRowProps {
 
 const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
   const { concludedTask, noConcludedTask, removeTask } = useTask();
+  const [isOpenModalDetails, setIsOpenModalDetails] = useState(false);
 
   return (
     <Box className={`${styles.container} ${concluded ? styles.concluded : ""}`}>
@@ -30,6 +33,7 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
           <span
             className={concluded ? styles.titleConcluded : styles.title}
             style={{ textDecoration: concluded ? "line-through" : "" }}
+            onClick={() => setIsOpenModalDetails(true)}
           >
             {name[0].toUpperCase() + name.slice(1)}
           </span>
@@ -38,6 +42,11 @@ const TaskRow = ({ name, description, id, concluded }: ITaskRowProps) => {
       <IconButton onClick={() => removeTask(id)}>
         <Delete color="error" />
       </IconButton>
+
+      <TaskDetails
+        isOpen={isOpenModalDetails}
+        onClose={() => setIsOpenModalDetails(false)}
+      />
     </Box>
   );
 };
