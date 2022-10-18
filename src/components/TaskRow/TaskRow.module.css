@@ -15,6 +15,7 @@
   font-size: 14px;
   font-weight: bold;
   color: rgb(0, 0, 0, 0.66);
+  cursor: pointer;
 }
 
 .titleConcluded {
@@ -22,6 +23,7 @@
   font-size: 14px;
   font-weight: bold;
   color: rgba(0, 0, 0, 0.479);
+  cursor: pointer;
 }
 
 .concluded {
