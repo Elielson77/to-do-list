@@ -17,6 +17,11 @@ interface ITaskDetailsProps {
 
 const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
   const { create_date, name, description, hour_create, concluded } = task;
+  const dateOld = new Date(create_date.split("/").reverse().join("-"));
+  const currenteDate = new Date();
+
+  const backDays = currenteDate.getDate() - dateOld.getDate();
+
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -61,7 +66,7 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
             <Box>
               <IconButton
                 onClick={onClose}
-                sx={{ margin: smUp ? "-2px -1px 0 0 " : "0 0 0 -10px" }}
+                sx={{ margin: smUp ? "0 0 0 0 " : "0 0 0 0" }}
               >
                 <Close />
               </IconButton>
@@ -87,9 +92,14 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
             justifyContent: "space-between",
           }}
         >
-          <Box>
+          <Box sx={{ display: "flex", gap: 0.5, alignItems: "baseline" }}>
             <Typography variant="subtitle2">
               Criada em: {create_date} às {hour_create}h
+            </Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+              {`- ${String(backDays).padStart(2, "0")} ${
+                backDays > 1 ? "dias" : "dia"
+              } atrás `}
             </Typography>
           </Box>
           <IconButton
@@ -97,6 +107,9 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
               margin: "-40px 30px 0 0",
               padding: "15px",
               backgroundColor: "#565656",
+              ":hover": {
+                backgroundColor: "#3f3f3f",
+              },
             }}
           >
             <Edit />

@@ -6,8 +6,8 @@ import { useState } from "react";
 import TaskDetails from "../modals/TaskDetails";
 import { ITask } from "../../utils/types";
 
-const TaskRow = (props: ITask) => {
-  const { name, description, id, concluded } = props;
+const TaskRow = (task: ITask) => {
+  const { name, id, concluded } = task;
   const { concludedTask, noConcludedTask, removeTask } = useTask();
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false);
 
@@ -28,23 +28,31 @@ const TaskRow = (props: ITask) => {
             }}
           />
         </Tooltip>
-
-        <Tooltip title={description} arrow>
-          <span
-            className={concluded ? styles.titleConcluded : styles.title}
-            style={{ textDecoration: concluded ? "line-through" : "" }}
-            onClick={() => setIsOpenModalDetails(true)}
-          >
-            {name[0].toUpperCase() + name.slice(1)}
-          </span>
-        </Tooltip>
+      </Box>
+      <Box
+        sx={{
+          width: "100%",
+          py: 1,
+          textAlign: "left",
+          cursor: "pointer",
+        }}
+        onClick={() => setIsOpenModalDetails(true)}
+      >
+        <span
+          className={`${styles.title} ${
+            concluded ? styles.titleConcluded : ""
+          }`}
+          style={{ textDecoration: concluded ? "line-through" : "" }}
+        >
+          {name[0].toUpperCase() + name.slice(1)}
+        </span>
       </Box>
       <IconButton onClick={() => removeTask(id)}>
         <Delete color="error" />
       </IconButton>
 
       <TaskDetails
-        task={props}
+        task={task}
         isOpen={isOpenModalDetails}
         onClose={() => setIsOpenModalDetails(false)}
       />
