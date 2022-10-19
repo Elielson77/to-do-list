@@ -81,10 +81,10 @@ const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
           backgroundColor: "#eaeaea",
           borderRadius: "5px",
           padding: "10px 20px",
-          width: smUp ? "500px" : "250px",
+          width: smUp ? "500px" : "300px",
           position: "fixed",
           bottom: "50%",
-          left: smUp ? "calc(50% - 280px)" : "calc(50% - 145px)",
+          left: smUp ? "calc(50% - 280px)" : "calc(50% - 150px - 20px)",
           gap: 2,
         }}
       >
