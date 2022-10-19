@@ -22,10 +22,11 @@ const Details = ({ task, isOpen, onClose }: IDetailsProps) => {
     <Modal open={isOpen} onClose={onClose}>
       <Box
         sx={{
+          width: "240px",
           padding: "10px 16px",
           backgroundColor: "white",
           position: "fixed",
-          left: "40vw",
+          left: "calc(50vw - 135px)",
           bottom: "50%",
         }}
       >
