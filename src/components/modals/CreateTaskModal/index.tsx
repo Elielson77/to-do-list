@@ -27,11 +27,24 @@ const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
   const [description, setDescription] = useState<string | undefined>(
     task ? task.description : ""
   );
+  const [errorName, setErrorName] = useState(false);
+  const [errorDescription, setErrorDescription] = useState(false);
+
   const { addTask, editTask } = useTask();
 
   const handleTask = () => {
+    if (!name || name.length < 5) {
+      setErrorName(true);
+      return;
+    }
+
+    if (description && description?.length < 5) {
+      setErrorDescription(true);
+      return;
+    }
+
     if (isEditing && task) {
-      editTask({ ...task, name, description});
+      editTask({ ...task, name, description });
       onClose();
     } else {
       try {
@@ -96,8 +109,18 @@ const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
             fullWidth
             placeholder="Nome da tarefa"
             value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            onChange={(e) => {
+              setErrorName(false);
+              setName(e.currentTarget.value);
+            }}
             sx={{ fontSize: "14px" }}
+            error={errorName}
+            helperText={
+              (errorName && !name && "Este campo é obrigatório!") ||
+              (errorName &&
+                name.length < 5 &&
+                "Este campo deve conter mais de 5 caracteres!")
+            }
             autoFocus
           />
 
@@ -107,7 +130,17 @@ const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
             type="text"
             placeholder="Descrição tarefa"
             value={description}
-            onChange={(e) => setDescription(e.currentTarget.value || undefined)}
+            onChange={(e) => {
+              setErrorDescription(false);
+              setDescription(e.currentTarget.value || undefined);
+            }}
+            error={errorDescription}
+            helperText={
+              errorDescription &&
+              description &&
+              description?.length < 5 &&
+              "A descrição deve ter mais que 5 caracteres!"
+            }
             sx={{ fontSize: "14px" }}
           />
 

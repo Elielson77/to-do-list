@@ -26,7 +26,7 @@ const Details = ({ task, isOpen, onClose }: IDetailsProps) => {
           padding: "10px 16px",
           backgroundColor: "white",
           position: "fixed",
-          left: "calc(50vw - 135px)",
+          left: "calc(50vw - 120px - 16px)",
           bottom: "50%",
         }}
       >
