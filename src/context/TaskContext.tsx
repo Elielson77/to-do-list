@@ -97,7 +97,9 @@ export const useTask = () => {
       });
       const hour = date.getHours();
       const minutes = date.getMinutes();
-      const edit_hour = `${hour}:${minutes}`;
+      const edit_hour = `${String(hour).padStart(2, "0")}:${String(
+        minutes
+      ).padStart(2, "0")}`;
       setTasks((prevTasks) => {
         const currentTasks = prevTasks.map((task) => {
           if (task.id === id) {

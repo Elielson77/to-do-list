@@ -5,11 +5,13 @@ import {
   useMediaQuery,
   IconButton,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import { Close, Edit } from "@mui/icons-material";
 import { ITask } from "../../../utils/types";
 import { useState } from "react";
 import CreateTaskModal from "../CreateTaskModal";
+import { useTask } from "../../../context/TaskContext";
 
 interface ITaskDetailsProps {
   isOpen: boolean;
@@ -18,11 +20,18 @@ interface ITaskDetailsProps {
 }
 
 const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
-  const { create_date, name, description, hour_create, concluded } = task;
-  const dateOld = new Date(create_date.split("/").reverse().join("-"));
-  const currenteDate = new Date();
-  const backDays = currenteDate.getDate() - dateOld.getDate();
+  const {
+    create_date,
+    name,
+    description,
+    hour_create,
+    concluded,
+    id,
+    edit_date,
+    edit_hour,
+  } = task;
   const [editTask, setEditTask] = useState(false);
+  const { concludedTask, noConcludedTask } = useTask();
 
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
@@ -56,13 +65,39 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
             }}
           >
             <Box>
-              <Typography sx={{ mt: 2, color: "#CFCFCF" }} variant="h5">
-                {name[0].toUpperCase() + name.slice(1)}
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mt: 2,
+                }}
+              >
+                <Checkbox
+                  color="success"
+                  checked={concluded}
+                  onChange={(e) =>
+                    e.currentTarget.checked
+                      ? concludedTask(id)
+                      : noConcludedTask(id)
+                  }
+                />
+
+                <Typography
+                  sx={{
+                    color: "#CFCFCF",
+                    textDecoration: concluded ? "line-through" : "",
+                  }}
+                  variant="h5"
+                >
+                  {name[0].toUpperCase() + name.slice(1)}
+                </Typography>
+              </Box>
+
               <Typography
                 variant="subtitle2"
                 sx={{ mt: "5px", color: "#CFCFCF" }}
-              >{`- ${concluded ? "Concluída" : "Não concluída"}`}</Typography>
+              >{`${concluded ? "Concluída" : "Não concluída"}`}</Typography>
             </Box>
 
             <Box>
@@ -84,40 +119,50 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            p: "0 0 12px 16px",
-            pb: !smUp ? "calc(100vh - (100vh - 65px))" : "",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: "baseline" }}>
-            <Typography variant="subtitle2">
-              Criada em: {create_date} às {hour_create}h
-            </Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
-              {`- ${String(backDays).padStart(2, "0")} ${
-                backDays > 1 ? "dias" : "dia"
-              } atrás `}
-            </Typography>
-          </Box>
-          <IconButton
+        <Box>
+          <Box
             sx={{
-              margin: "-40px 30px 0 0",
-              padding: "15px",
-              backgroundColor: "#565656",
-              ":hover": {
-                backgroundColor: "#3f3f3f",
-              },
+              p: "0 0 12px 16px",
+              pb: !smUp ? "calc(100vh - (100vh - 65px))" : "",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
-            onClick={() => setEditTask(true)}
           >
-            <Edit />
-          </IconButton>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 0.5,
+                alignItems: "baseline",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="subtitle2">
+                Criada em: {create_date} às {hour_create}h
+              </Typography>
+              {edit_date && edit_hour && (
+                <Typography variant="subtitle2">
+                  Editada em: {edit_date} às {edit_hour}h
+                </Typography>
+              )}
+            </Box>
+            <IconButton
+              sx={{
+                margin: "-40px 30px 0 0",
+                padding: "15px",
+                backgroundColor: "#565656",
+                ":hover": {
+                  backgroundColor: "#3f3f3f",
+                },
+              }}
+              onClick={() => setEditTask(true)}
+            >
+              <Edit />
+            </IconButton>
+          </Box>
         </Box>
+
         <CreateTaskModal
           isOpen={editTask}
           onClose={() => setEditTask(false)}

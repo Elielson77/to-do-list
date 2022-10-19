@@ -96,6 +96,14 @@ function App() {
           width: smUp ? "500px" : "100%",
         }}
       >
+        {!tasks[0] && (
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "center", color: "#a0a0a0" }}
+          >
+            Não há tarefas, comece criando uma!
+          </Typography>
+        )}
         {filters.concluded &&
           tasks.map((task) => {
             if (task.concluded === true)

@@ -31,10 +31,7 @@ const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
 
   const handleTask = () => {
     if (isEditing && task) {
-      const { id, concluded, create_date } = task;
-      editTask({ id, name, description, concluded, create_date });
-      setName("");
-      setDescription(undefined);
+      editTask({ ...task, name, description});
       onClose();
     } else {
       try {
