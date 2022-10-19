@@ -61,10 +61,22 @@ export const useTask = () => {
   };
 
   const concludedTask = (id: string) => {
+    const date = new Date();
+    const concluded_date = date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+    const concluded_hour = `${String(date.getHours()).padStart(
+      2,
+      "0"
+    )}:${String(date.getMinutes()).padStart(2, "0")}`;
     setTasks((prevTasks) => {
       const currentTasks = prevTasks.map((task) => {
         if (id === task.id) {
           task.concluded = true;
+          task.concluded_date = String(concluded_date);
+          task.concluded_hour = String(concluded_hour);
         }
         return task;
       });
@@ -78,6 +90,8 @@ export const useTask = () => {
       const currentTasks = prevTasks.map((task) => {
         if (id === task.id) {
           task.concluded = false;
+          delete task.concluded_date;
+          delete task.concluded_hour;
         }
         return task;
       });

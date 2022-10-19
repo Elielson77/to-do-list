@@ -12,6 +12,7 @@ import { ITask } from "../../../utils/types";
 import { useState } from "react";
 import CreateTaskModal from "../CreateTaskModal";
 import { useTask } from "../../../context/TaskContext";
+import Details from "../Details";
 
 interface ITaskDetailsProps {
   isOpen: boolean;
@@ -20,17 +21,9 @@ interface ITaskDetailsProps {
 }
 
 const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
-  const {
-    create_date,
-    name,
-    description,
-    hour_create,
-    concluded,
-    id,
-    edit_date,
-    edit_hour,
-  } = task;
+  const { name, description, concluded, id } = task;
   const [editTask, setEditTask] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
   const { concludedTask, noConcludedTask } = useTask();
 
   const theme = useTheme();
@@ -130,23 +123,13 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
               justifyContent: "space-between",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                gap: 0.5,
-                alignItems: "baseline",
-                flexDirection: "column",
-              }}
+            <Typography
+              variant="subtitle2"
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => setOpenDetails(true)}
             >
-              <Typography variant="subtitle2">
-                Criada em: {create_date} às {hour_create}h
-              </Typography>
-              {edit_date && edit_hour && (
-                <Typography variant="subtitle2">
-                  Editada em: {edit_date} às {edit_hour}h
-                </Typography>
-              )}
-            </Box>
+              Detalhes
+            </Typography>
             <IconButton
               sx={{
                 margin: "-40px 30px 0 0",
@@ -167,6 +150,11 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
           isOpen={editTask}
           onClose={() => setEditTask(false)}
           task={task}
+        />
+        <Details
+          task={task}
+          isOpen={openDetails}
+          onClose={() => setOpenDetails(false)}
         />
       </Box>
     </Modal>

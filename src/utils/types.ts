@@ -7,4 +7,6 @@ export interface ITask {
   hour_create?: string;
   edit_date?: string;
   edit_hour?: string;
+  concluded_date?: string;
+  concluded_hour?: string;
 }
