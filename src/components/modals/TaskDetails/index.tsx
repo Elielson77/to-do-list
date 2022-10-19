@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import { Close, Edit } from "@mui/icons-material";
 import { ITask } from "../../../utils/types";
+import { useState } from "react";
+import CreateTaskModal from "../CreateTaskModal";
 
 interface ITaskDetailsProps {
   isOpen: boolean;
@@ -19,8 +21,8 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
   const { create_date, name, description, hour_create, concluded } = task;
   const dateOld = new Date(create_date.split("/").reverse().join("-"));
   const currenteDate = new Date();
-
   const backDays = currenteDate.getDate() - dateOld.getDate();
+  const [editTask, setEditTask] = useState(false);
 
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
@@ -111,10 +113,16 @@ const TaskDetails = ({ isOpen, onClose, task }: ITaskDetailsProps) => {
                 backgroundColor: "#3f3f3f",
               },
             }}
+            onClick={() => setEditTask(true)}
           >
             <Edit />
           </IconButton>
         </Box>
+        <CreateTaskModal
+          isOpen={editTask}
+          onClose={() => setEditTask(false)}
+          task={task}
+        />
       </Box>
     </Modal>
   );

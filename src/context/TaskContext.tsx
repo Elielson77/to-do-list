@@ -43,7 +43,7 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useTask = () => {
-  const { setTasks } = useContext(TaskContext);
+  const { setTasks, tasks } = useContext(TaskContext);
 
   const addTask = (task: ITask) => {
     setTasks((prevTasks) => {
@@ -86,5 +86,35 @@ export const useTask = () => {
     });
   };
 
-  return { addTask, removeTask, concludedTask, noConcludedTask };
+  const editTask = ({ id, name, description, concluded }: ITask) => {
+    const currentTask = tasks.find((task) => task.id === id);
+    if (currentTask) {
+      const date = new Date();
+      const edit_date = date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      });
+      const hour = date.getHours();
+      const minutes = date.getMinutes();
+      const edit_hour = `${hour}:${minutes}`;
+      setTasks((prevTasks) => {
+        const currentTasks = prevTasks.map((task) => {
+          if (task.id === id) {
+            task.concluded = concluded;
+            task.name = name;
+            task.description = description;
+            task.edit_date = edit_date;
+            task.edit_hour = edit_hour;
+            return task;
+          }
+          return task;
+        });
+        localStorage.setItem("tasks", JSON.stringify(currentTasks));
+        return currentTasks;
+      });
+    }
+  };
+
+  return { addTask, removeTask, concludedTask, noConcludedTask, editTask };
 };

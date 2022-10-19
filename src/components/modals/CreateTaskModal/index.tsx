@@ -8,45 +8,59 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { nanoid as id } from "nanoid";
+import { nanoid } from "nanoid";
 import { useTask } from "../../../context/TaskContext";
+import { ITask } from "../../../utils/types";
 
 interface ICreateTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
+  task?: ITask;
 }
 
-const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
+const CreateTaskModal = ({ isOpen, onClose, task }: ICreateTaskModalProps) => {
+  const isEditing = Boolean(task);
+
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"));
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string | undefined>("");
-  const { addTask } = useTask();
+  const [name, setName] = useState<string>(task ? task.name : "");
+  const [description, setDescription] = useState<string | undefined>(
+    task ? task.description : ""
+  );
+  const { addTask, editTask } = useTask();
 
-  const creatTask = () => {
-    try {
-      const date = new Date();
-      const hours = String(date.getHours());
-      const minutes = String(date.getMinutes());
-
-      const task = {
-        name,
-        description,
-        id: id(),
-        concluded: false,
-        create_date: date.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-        }),
-        hour_create: `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`,
-      };
-      addTask(task);
+  const handleTask = () => {
+    if (isEditing && task) {
+      const { id, concluded, create_date } = task;
+      editTask({ id, name, description, concluded, create_date });
       setName("");
       setDescription(undefined);
       onClose();
-    } catch {
-      console.log("Deu erro");
+    } else {
+      try {
+        const date = new Date();
+        const hours = String(date.getHours());
+        const minutes = String(date.getMinutes());
+
+        const task = {
+          name,
+          description,
+          id: nanoid(),
+          concluded: false,
+          create_date: date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          }),
+          hour_create: `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`,
+        };
+        addTask(task);
+        setName("");
+        setDescription(undefined);
+        onClose();
+      } catch {
+        console.log("Deu erro");
+      }
     }
   };
 
@@ -65,7 +79,9 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
         }}
       >
         <Box sx={{ textAlign: "center" }}>
-          <Typography variant="h6">Criar Tarefa</Typography>
+          <Typography variant="h6">
+            {isEditing ? "Editar" : "Criar"} Tarefa
+          </Typography>
         </Box>
 
         <Box
@@ -100,10 +116,10 @@ const CreateTaskModal = ({ isOpen, onClose }: ICreateTaskModalProps) => {
 
           <Button
             variant="contained"
-            onClick={creatTask}
+            onClick={handleTask}
             sx={{ width: smUp ? "30%" : "100%" }}
           >
-            adicionar
+            {isEditing ? "editar" : "adicionar"}
           </Button>
         </Box>
       </Box>
