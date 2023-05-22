@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+_View the app in_ https://app-todotarefas.netlify.app/
+
 ## Available Scripts
 
 In the project directory, you can run:
